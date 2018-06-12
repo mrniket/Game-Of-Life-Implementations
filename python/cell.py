@@ -14,3 +14,6 @@ class Cell:
         if isinstance(other, Cell):
             return self.x == other.x and self.y == other.y and self.alive == other.alive
         return False
+
+    def __repr__(self):
+        return f"({self.x}, {self.y}, {self.alive})"
