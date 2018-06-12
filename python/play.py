@@ -1,4 +1,4 @@
-from time import time
+from time import time, sleep
 from os import system
 from world import *
 
@@ -21,7 +21,10 @@ class Play:
 
         while True:
             tick_start = time()
+            world.determine_actions()
+            world.execute_actions()
             world._tick()
+            sleep(1)
             tick_finish = time()
             tick_time = (tick_finish - tick_start)
             total_tick += tick_time

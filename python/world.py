@@ -20,22 +20,22 @@ class World:
         self.populate_cells()
         self.prepopulate_neighbours()
 
-    def _tick(self):
-        # First determine the action for all cells
-        for key,cell in self.cells.items():
+    def determine_actions(self):
+        for key, cell in self.cells.items():
             alive_neighbours = self.alive_neighbours_around(cell)
             if cell.alive is False and alive_neighbours == 3:
                 cell.next_state = 1
             elif alive_neighbours < 2 or alive_neighbours > 3:
                 cell.next_state = 0
 
-        # Then execute the determined action for all cells
-        for key,cell in self.cells.items():
+    def execute_actions(self):
+        for key, cell in self.cells.items():
             if cell.next_state == 1:
                 cell.alive = True
             elif cell.next_state == 0:
                 cell.alive = False
 
+    def _tick(self):
         self.tick += 1
 
     # Implement first using string concatenation. Then implement any
@@ -48,17 +48,6 @@ class World:
                 rendering += cell.to_char()
             rendering += "\n"
         return rendering
-
-        # The following works but performs no faster than above
-        # rendering = []
-        # for y in list(range(self.height)):
-        #     for x in list(range(self.width)):
-        #         cell = self.cell_at(x, y)
-        #         rendering.append(cell.to_char())
-        #     rendering.append("\n")
-        # return ''.join(rendering)
-
-    # Python doesn't have a concept of public/private methods
 
     def populate_cells(self):
         for y in list(range(self.height)):
