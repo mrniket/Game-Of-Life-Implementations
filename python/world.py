@@ -1,45 +1,38 @@
 from random import randint
+from cell import Cell
 
 class World:
 
     class LocationOccupied(RuntimeError): pass
 
-    # Python doesn't have a concept of public/private variables
-
-    def __init__(self, width, height):
+    def __init__(self, width, height, seed):
         self.width = width
         self.height = height
-        self.tick = 0
-        self.cells = {}
-        self.cached_directions = [
-            [-1, 1],  [0, 1],  [1, 1], # above
-            [-1, 0],           [1, 0], # sides
-            [-1, -1], [0, -1], [1, -1] # below
-        ]
+        self.tick_count = 0
+        self.cells = {} # dict {string: Cell}
 
-        self.populate_cells()
+        self.populate_cells(seed)
         self.prepopulate_neighbours()
 
     def determine_actions(self):
-        for key, cell in self.cells.items():
-            alive_neighbours = self.alive_neighbours_around(cell)
-            if cell.alive is False and alive_neighbours == 3:
-                cell.next_state = 1
-            elif alive_neighbours < 2 or alive_neighbours > 3:
-                cell.next_state = 0
+        """
+        Decide the fate of the cells on the next tick, as per the rules
+
+        Store the result in cell.next_state
+        """
+        pass
 
     def execute_actions(self):
-        for key, cell in self.cells.items():
-            if cell.next_state == 1:
-                cell.alive = True
-            elif cell.next_state == 0:
-                cell.alive = False
+        """
+        Apply the actions for the next tick using cell.next_state
+        """
+        pass
 
-    def _tick(self):
-        self.tick += 1
+    def tick(self):
+        self.determine_actions()
+        self.execute_actions()
+        self.tick_count += 1
 
-    # Implement first using string concatenation. Then implement any
-    # special string builders, and use whatever runs the fastest
     def render(self):
         rendering = ''
         for y in list(range(self.height)):
@@ -49,11 +42,23 @@ class World:
             rendering += "\n"
         return rendering
 
-    def populate_cells(self):
+    def populate_cells(self, seed):
+        if seed:
+            self.populate_cells_with_seed(seed)
+        else:
+            for y in list(range(self.height)):
+                for x in list(range(self.width)):
+                    alive = (randint(0, 100) <= 20)
+                    self.add_cell(x, y, alive)
+
+    def populate_cells_with_seed(self, seed):
         for y in list(range(self.height)):
             for x in list(range(self.width)):
-                alive = (randint(0, 100) <= 20)
-                self.add_cell(x, y, alive)
+                self.add_cell(x, y, False)
+
+        for x, y in seed:
+            cell = self.cell_at(x, y)
+            cell.alive = True
 
     def prepopulate_neighbours(self):
         for key,cell in self.cells.items():
@@ -71,39 +76,20 @@ class World:
         return self.cells.get(str(x)+'-'+str(y))
 
     def neighbours_around(self, cell):
-        if cell.neighbours is None:
-            cell.neighbours = []
-            for rel_x,rel_y in self.cached_directions:
-                neighbour = self.cell_at(
-                    (cell.x + rel_x),
-                    (cell.y + rel_y)
-                )
-                if neighbour is not None:
-                    cell.neighbours.append(neighbour)
+        pass
 
-        return cell.neighbours
-
-    # Implement first using filter/lambda if available. Then implement
-    # foreach and for. Retain whatever implementation runs the fastest
     def alive_neighbours_around(self, cell):
-        # The following works but is slower
-        # filter_alive = lambda neighbour: neighbour.alive
-        # return len(list(filter(filter_alive, neighbours)))
-
         alive_neighbours = 0
         for neighbour in self.neighbours_around(cell):
             if neighbour.alive:
                 alive_neighbours += 1
         return alive_neighbours
 
-class Cell:
-
-    def __init__(self, x, y, alive = False):
-        self.x = x
-        self.y = y
-        self.alive = alive
-        self.next_state = None
-        self.neighbours = None
-
-    def to_char(self):
-        return 'o' if self.alive else ' '
+    def __eq__(self, other):
+        if isinstance(other, World):
+            for key, cell in self.cells.items():
+                other_cell = other.cells.get(key)
+                if not cell == other_cell:
+                    return False
+            return True
+        return False

@@ -9,3 +9,8 @@ class Cell:
 
     def to_char(self):
         return 'o' if self.alive else ' '
+
+    def __eq__(self, other):
+        if isinstance(other, Cell):
+            return self.x == other.x and self.y == other.y and self.alive == other.alive
+        return False
