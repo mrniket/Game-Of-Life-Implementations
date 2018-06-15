@@ -5,7 +5,7 @@ class World:
 
     class LocationOccupied(RuntimeError): pass
 
-    def __init__(self, width, height, seed):
+    def __init__(self, width, height, seed=[]):
         self.width = width
         self.height = height
         self.tick_count = 0
@@ -20,8 +20,8 @@ class World:
         Find all the neighbours of cell.
         Append to cell.neighbours and return it
 
-       """
-    pass
+        """
+        pass
 
     def determine_actions(self):
         """
