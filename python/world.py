@@ -52,13 +52,10 @@ class World:
                     self.add_cell(x, y, alive)
 
     def populate_cells_with_seed(self, seed):
-        for y in list(range(self.height)):
-            for x in list(range(self.width)):
-                self.add_cell(x, y, False)
-
         for x, y in seed:
-            cell = self.cell_at(x, y)
-            cell.alive = True
+            if x < self.width and y < self.height:
+                cell = self.add_cell(x, y)
+                cell.alive = True
 
     def prepopulate_neighbours(self):
         for key,cell in self.cells.items():
@@ -76,7 +73,13 @@ class World:
         return self.cells.get(str(x)+'-'+str(y))
 
     def neighbours_around(self, cell):
-        pass
+        """
+
+        Find all the neighbours of cell.
+        Append to cell.neighbours and return it
+
+       """
+    pass
 
     def alive_neighbours_around(self, cell):
         alive_neighbours = 0

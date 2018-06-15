@@ -1,6 +1,6 @@
 class Cell:
 
-    def __init__(self, x, y, alive = False):
+    def __init__(self, x, y, alive=False):
         self.x = x
         self.y = y
         self.alive = alive
@@ -15,5 +15,5 @@ class Cell:
             return self.x == other.x and self.y == other.y and self.alive == other.alive
         return False
 
-    def __repr__(self):
-        return f"({self.x}, {self.y}, {self.alive})"
+    def __str__(self):
+        return "(" + str(self.x) + ", " + str(self.y) + ")" + " Alive: " + str(self.alive)
