@@ -14,6 +14,15 @@ class World:
         self.populate_cells(seed)
         self.prepopulate_neighbours()
 
+    def neighbours_around(self, cell):
+        """
+
+        Find all the neighbours of cell.
+        Append to cell.neighbours and return it
+
+       """
+    pass
+
     def determine_actions(self):
         """
         Decide the fate of the cells on the next tick, as per the rules
@@ -71,15 +80,6 @@ class World:
 
     def cell_at(self, x, y):
         return self.cells.get(str(x)+'-'+str(y))
-
-    def neighbours_around(self, cell):
-        """
-
-        Find all the neighbours of cell.
-        Append to cell.neighbours and return it
-
-       """
-    pass
 
     def alive_neighbours_around(self, cell):
         alive_neighbours = 0
