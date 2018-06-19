@@ -5,6 +5,7 @@ class Cell:
         self.y = y
         self.alive = alive
         self.next_state = None
+        # This will be an array
         self.neighbours = None
 
     def to_char(self):

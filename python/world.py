@@ -21,7 +21,6 @@ class World:
         Append to cell.neighbours and return it
 
        """
-    pass
 
     def determine_actions(self):
         """
