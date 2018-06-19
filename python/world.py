@@ -5,29 +5,28 @@ class World:
 
     class LocationOccupied(RuntimeError): pass
 
-    def __init__(self, width, height, seed):
+    def __init__(self, width, height, seed=[]):
         self.width = width
         self.height = height
         self.tick_count = 0
-        self.cells = {} # dict {string: Cell}
+        self.cells = {}  # dict {string: Cell}
 
         self.populate_cells(seed)
         self.prepopulate_neighbours()
 
     def neighbours_around(self, cell):
         """
-
         Find all the neighbours of cell.
         Append to cell.neighbours and return it
-
-       """
+        """
+        pass
 
     def determine_actions(self):
         """
         Decide the fate of the cells on the next tick, as per the rules
-
         Store the result in cell.next_state
         """
+
         pass
 
     def execute_actions(self):
