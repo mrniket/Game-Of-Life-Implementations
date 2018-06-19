@@ -71,15 +71,14 @@ class World:
         return self.cells.get(str(x)+'-'+str(y))
 
     def neighbours_around(self, cell):
+        directions = [0, 1, -1]
         if cell.neighbours is None:
             cell.neighbours = []
-            for rel_x,rel_y in self.cached_directions:
-                neighbour = self.cell_at(
-                    (cell.x + rel_x),
-                    (cell.y + rel_y)
-                )
-                if neighbour is not None:
-                    cell.neighbours.append(neighbour)
+            for x in directions:
+                for y in directions:
+                    neighbour = self.cell_at(cell.x + x, cell.y + y)
+                    if neighbour and neighbour != cell:
+                        cell.neighbours.append(neighbour)
 
         return cell.neighbours
 
